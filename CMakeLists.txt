@@ -33,12 +33,10 @@ add_library(LBM_core STATIC
 ${ALL_SOURCES}
 )
 
+target_include_directories(LBM_core PUBLIC includes)
+target_include_directories(LBM_core PRIVATE src)
+target_compile_features(LBM_core PUBLIC cxx_std_17)
 
-
-include_directories(${PROJECT_NAME} PUBLIC includes)
-include_directories(${PROJECT_NAME} PRIVATE src)
-include_directories(${PROJECT_NAME} PRIVATE VTK)
-include_directories(${PROJECT_NAME} PRIVATE Masks)
 set (CMAKE_CXX_STANDARD 17)
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES 
@@ -46,3 +44,5 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES
 )
 
 add_executable(main ${SOURCE_EXE})
+
+file(MAKE_DIRECTORY VTK)
