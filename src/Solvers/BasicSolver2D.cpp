@@ -53,7 +53,7 @@ Engine::BasicSolver2D::BasicSolver2D(int Nx, int Ny, int numspec):
 void Engine::BasicSolver2D::SaveVTKFile(int tStep)
 {
     std::stringstream fname;
-    fname << "../../VTK/adv_";
+    fname << "../../VTK/kappa = " << kappa << "/adv_";
     if (tStep < 10) fname << "0";
     if (tStep < 100) fname << "0";
     if (tStep < 1000) fname << "0";
