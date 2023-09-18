@@ -44,5 +44,6 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES
 )
 
 add_executable(main ${SOURCE_EXE})
+target_link_libraries(main LBM_core)
 
 file(MAKE_DIRECTORY VTK)
