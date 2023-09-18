@@ -6,7 +6,6 @@
 Engine::BasicSolver2D::BasicSolver2D(int Nx, int Ny, int numspec):
     mNx(Nx), 
     mNy(Ny), 
-    temperature(400),
     number_of_species(numspec),
     rhomulticomponent(numspec, std::vector<std::vector<double>>(Nx + 2, std::vector<double>(Ny + 2))),
     critical_temperatures(std::vector<double>(numspec)),
@@ -17,6 +16,10 @@ Engine::BasicSolver2D::BasicSolver2D(int Nx, int Ny, int numspec):
     gamma(std::vector<double>(numspec)),
     rho_in(std::vector<double>(numspec)),
     rho_out(std::vector<double>(numspec)),
+    mol_fraction(std::vector<double>(2)),
+    fraction(std::vector<double>(numspec)),
+    fraction_liq(std::vector<double>(numspec)),
+    fraction_vap(std::vector<double>(numspec)),
     ux_spec(numspec, std::vector<std::vector<double>>(Nx + 2, std::vector<double>(Ny + 2))),
     uy_spec(numspec, std::vector<std::vector<double>>(Nx + 2, std::vector<double>(Ny + 2))),
     gamma_multiply_rho(std::vector<std::vector<double>>(Nx + 2, std::vector<double>(Ny + 2))),
@@ -34,7 +37,7 @@ Engine::BasicSolver2D::BasicSolver2D(int Nx, int Ny, int numspec):
     fmulticomponent(numspec, std::vector<std::vector<std::vector<double>>>
         (9, std::vector<std::vector<double>>(Nx + 2, std::vector<double>(Ny + 2))))
 {
-
+    set_initial_conditions();
     std::ifstream in("../../Masks/pore_kanal 600x100.txt"); // окрываем файл для чтения
     if (in.is_open())
     {
@@ -45,8 +48,6 @@ Engine::BasicSolver2D::BasicSolver2D(int Nx, int Ny, int numspec):
     }
     in.close();
 
-
-    
 }
 
 void Engine::BasicSolver2D::SaveVTKFile(int tStep)
@@ -134,6 +135,35 @@ void Engine::BasicSolver2D::LBM_Step()
     set_Phi();
     calculate_force();
     collision_step();
+}
+
+void Engine::BasicSolver2D::set_initial_conditions()
+{
+    const char* filenameini = "../../Init/ini.txt";
+
+    h = ini_read<double>(filenameini, "h", 1.0e-6);
+    delta_t = ini_read<double>(filenameini, "delta_t", 1.0e-9);
+    wettability1 = ini_read<double>(filenameini, "wettability1", 1.0); // walls
+    wettability2 = ini_read<double>(filenameini, "wettability2", 1.0); //pores
+    b0 = ini_read<double>(filenameini, "b0", 0.07780669);
+    a0 = ini_read<double>(filenameini, "a0", 0.4572793);
+    rho_mixture = ini_read<double>(filenameini, "rho_mixture", 300.);
+    ful_rho = ini_read<double>(filenameini, "ful_rho", 0.);
+    leak_coef = ini_read<double>(filenameini, "leak_coef", 0.995);
+    g = ini_read<double>(filenameini, "g", 0.);
+    k = ini_read<double>(filenameini, "k", 1.);
+    R = ini_read<double>(filenameini, "R", 8.31446); // [J/(mol*K)]
+    max_rho = ini_read<double>(filenameini, "max_rho", 0.);
+    min_rho = ini_read<double>(filenameini, "min_rho", 1000.);
+    A2 = ini_read<double>(filenameini, "A2", -0.580); // -0.8080 -0.1381 Coefficient for calculating forces Peng-Robinson
+    tau = ini_read<double>(filenameini, "tau", 1.); // relaxation time
+    temperature = ini_read<double>(filenameini, "temperature", 350.); // Temperature of fluid [K]
+    kappa = ini_read<double>(filenameini, "kappa", 0.0);
+    radius_of_droplet = ini_read<double>(filenameini, "radius_of_droplet", 10.);
+    leak = ini_read<bool>(filenameini, "leak", 0);
+    stream = ini_read<bool>(filenameini, "stream", 0);
+    saveVTK = ini_read<bool>(filenameini, "saveVTK", 0);
+    
 }
 
 

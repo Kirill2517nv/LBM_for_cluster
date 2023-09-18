@@ -15,12 +15,6 @@ namespace Engine {
 		virtual void calculate_force() override;
 		virtual void collision_step() override;
 	private:
-		double h = 1.0e-6;
-		double delta_t = 1.0e-9;
-		double wettability1 = 1.0;
-		double wettability2 = 1.0;
-		double b0 = 0.07780669;
-		double a0 = 0.4572793;
 		double B = - 0.0000;
 		double RR = 0.000;
 		bool stream = false;

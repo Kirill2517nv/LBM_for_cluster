@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "IniRead/ini.hpp"
 
 namespace Engine {
 	class BasicSolver2D {
@@ -12,7 +13,7 @@ namespace Engine {
 		virtual ~BasicSolver2D();
 
 		virtual void LBM_Step();
-		virtual void set_initial_conditions() = 0;
+		virtual void set_initial_conditions();
 		virtual void set_border_conditions() = 0;
 		virtual void movement_step() = 0;
 		virtual void calculate_moments() = 0;
@@ -35,10 +36,10 @@ namespace Engine {
 		std::vector<std::vector<std::vector<double>>> get_rhomulticomponent() { return rhomulticomponent; }
 		std::vector<std::vector<double>> get_rho() { return rho; }
 		std::vector<std::vector<double>> get_pressure() { return pressure; }
-		double* get_mol_fraction() { return mol_fraction; };
-		double* get_fraction() { return fraction; };
-		double* get_fraction_liq() { return fraction_liq; };
-		double* get_fraction_vap() { return fraction_vap; };
+		std::vector<double> get_mol_fraction() { return mol_fraction; };
+		std::vector<double> get_fraction() { return fraction; };
+		std::vector<double> get_fraction_liq() { return fraction_liq; };
+		std::vector<double> get_fraction_vap() { return fraction_vap; };
 		const bool get_leak() { return leak; }
 		const bool get_saveVTK() { return saveVTK; }
 		const bool get_stream() { return stream; }
@@ -62,13 +63,20 @@ namespace Engine {
 
 	protected:
 		virtual void eq_func(double rho, double ux, double uy, double* f_eq);
+		double h = 1.0e-6;
+		double delta_t = 1.0e-9;
+		double wettability1 = 1.03; // walls
+		double wettability2 = 1.03; //pores
+		double b0 = 0.07780669;
+		double a0 = 0.4572793;
+		double rho_mixture = 300.;
 		double ful_rho = 0.;
 		double leak_coef = 0.995;
 		double g = 0.0e1;
 		double k = 1.;
 		double R = 8.31446; // [J/(mol*K)]
 		double max_rho = 0;
-		double min_rho = 100;
+		double min_rho = 1000;
 		double A2 = -0.580;  // -0.8080 -0.1381 Coefficient for calculating forces Peng-Robinson
 		double tau = 1.0; // relaxation time
 		double temperature; // Temperature of fluid [K]
@@ -104,10 +112,10 @@ namespace Engine {
 		const int opposite_directions[9] = { 0, 3, 4, 1, 2, 7, 8, 5, 6 };
 		const int x_invert[9] = { 0, 3, 2, 1, 4, 6, 5, 8, 7 };
 		const double G[9] = { 1, 1, 1, 1, 1,   0.25,  0.25, 0.25, 0.25 };
-		double fraction_liq[3];
-		double fraction_vap[3];
-		double fraction[3];
-		double mol_fraction[2];
+		std::vector<double> fraction_liq;
+		std::vector<double> fraction_vap;
+		std::vector<double> fraction;
+		std::vector<double> mol_fraction;
 		std::vector<double> rho_in;
 		std::vector<double> rho_out;
 		double kappa = 0.4;

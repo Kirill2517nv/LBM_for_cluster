@@ -5,6 +5,7 @@ project (LBM_cluster)
 set(PROJECT_NAME LBM_cluster)
 
 set(INCLUDES
+	includes/IniRead/ini.hpp
 	includes/Solvers/BasicSolver2D.hpp
 	includes/Solvers/SolverMRTDimensional2D.hpp
 	includes/Solvers/Solver3Phases2D.hpp

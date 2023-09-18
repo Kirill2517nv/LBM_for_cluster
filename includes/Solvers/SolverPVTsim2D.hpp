@@ -21,13 +21,6 @@ namespace Engine {
 		virtual void eq_func(double rho, double ux, double uy, double* f_eq) override;
 		void eq_func_dimensional_moment(double rho, double ux, double uy, double* moment_eq);
 		void set_surface_force(int i, int j, double* surface_force);
-		double h = 1.0e-6;
-		double delta_t = 1.0e-9;
-		double wettability1 = 1.0;
-		double b0 = 0.07780669;
-		double a0 = 0.4572793;
-		double rho_mixture = 300.;
-	
 
 		std::vector<double> s_k = { 1.0, 0.8, 0.8, 1., 1.1, 1., 1.1, 1.72, 1.72 };
 		//std::vector<double> s_k = { 0, 1 / tau, 1 / tau, 1., 1 / tau, 1., 1 / tau, 1 / tau, 1 / tau };

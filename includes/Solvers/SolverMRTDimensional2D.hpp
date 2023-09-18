@@ -17,11 +17,7 @@ namespace Engine {
 	private:
 		virtual void eq_func(double rho, double ux, double uy, double* f_eq) override;
 		void eq_func_dimensional_moment(double rho, double ux, double uy, double* moment_eq);
-		double h = 1.0e-6;
-		double delta_t = 1.0e-9;
-		double wettability1 = 1.0;
-		double b0 = 0.07780669;
-		double a0 = 0.4572793;
+
 		//std::vector<double> s_k = { 0, 1.63, 1.14, 1., 1.92, 1., 1.92, 1 / tau, 1 / tau };
 		std::vector<double> s_k = { 0, 1 / tau, 1 / tau, 1., 1 / tau, 1., 1 / tau, 1 / tau, 1 / tau };
 

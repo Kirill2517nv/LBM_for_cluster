@@ -43,8 +43,6 @@ namespace Engine {
 
 	void SolverPVTsim2D::set_initial_conditions()
 	{
-		//LOG_INFO("set_initial_conditions");
-		temperature = 350.; /*376*/
 		/*метан (omega = 0.01142), T cr = 190.564 K , Pcr = 4.5992 MPa , mol_mass = 0.016 kg/mol, rho cr = 162.66 kg/m^3  */
 		/*бутан (omega = 0.201), T cr = 425.125 K , Pcr = 3.796 MPa , mol_mass = 0.05812 kg/mol, rho cr = 228 kg/m^3 */
 		/*декан (omega = 0.4884), T cr = 617.7 K , Pcr = 2.103 MPa , mol_mass = 0.14229 kg/mol, rho cr = 233 kg/m^3  */
@@ -55,9 +53,6 @@ namespace Engine {
 		critical_temperatures = { 190.564, 425.125, 617.7 }; /* [k] */
 		critical_rho = { 162.66, 228., 233. }; /*[kg/m^3]*/
 		molarmass = { 0.016, 0.05812, 0.14229 }; /*[kg/mol]*/
-		rho_mixture = 30.; // 231.3 400
-		//ux_spec.swap(std::vector<std::vector<std::vector<double>>> (number_of_species, std::vector<std::vector<double>>(mNx + 2, std::vector<double>(mNy + 2, 0.05))));
-		//uy_spec.swap(std::vector<std::vector<std::vector<double>>> (number_of_species, std::vector<std::vector<double>>(mNx + 2, std::vector<double>(mNy + 2, 0.05))));
 		Bi = { b0 * R * critical_temperatures[0] / (critical_pressures[0] * molarmass[0]),
 		   b0 * R * critical_temperatures[1] / (critical_pressures[1] * molarmass[1]) ,
 		   b0 * R * critical_temperatures[2] / (critical_pressures[2] * molarmass[2]) };
