@@ -13,6 +13,7 @@ namespace Engine {
 
 		set_initial_conditions();
 		double f_eq[9];
+#pragma omp parallel for
 		for (int numspec = 0; numspec < number_of_species; numspec++)
 		{
 			for (int i = 1; i <= mNx; i++)
@@ -95,6 +96,7 @@ namespace Engine {
 
 		int edge = 50;
 		int delta = 10;
+		#pragma omp parallel for
 		for (int i = 1; i <= mNx; i++)
 		{
 			for (int j = 1; j <= mNy; j++)
@@ -152,6 +154,7 @@ namespace Engine {
 		}*/
 		if (leak)
 		{
+			#pragma omp parallel for
 			for (int numspec = 0; numspec < number_of_species; numspec++)
 			{
 				for (int i = 1; i <= mNx; i++)
@@ -193,6 +196,7 @@ namespace Engine {
 		}*/
 
 		/*Stream*/
+		#pragma omp parallel for
 		for (int numspec = 0; numspec < number_of_species; numspec++)
 		{
 			double f_eq_in[9];
@@ -260,6 +264,7 @@ namespace Engine {
 
 	void SolverPVTsimDynamic2D::movement_step()
 	{
+		#pragma omp parallel for
 		for (int numspec = 0; numspec < number_of_species; numspec++)
 		{
 			std::vector<std::vector<double>> f_temp(mNx + 2, std::vector<double>(mNy + 2));
@@ -289,6 +294,7 @@ namespace Engine {
 	void SolverPVTsimDynamic2D::calculate_moments()
 	{
 		ful_rho = 0;
+#pragma omp parallel for
 		for (int i = 1; i <= mNx; i++) {
 			for (int j = 1; j <= mNy; j++) {
 				if (mask[i][j] == 0)
@@ -340,6 +346,7 @@ namespace Engine {
 
 	void SolverPVTsimDynamic2D::calculate_pressure()
 	{
+#pragma omp parallel for
 		for (int i = 1; i <= mNx; i++) {
 			for (int j = 1; j <= mNy; j++)
 			{
@@ -371,6 +378,7 @@ namespace Engine {
 
 	void SolverPVTsimDynamic2D::set_Phi()
 	{
+#pragma omp parallel for
 		for (int i = 1; i <= mNx; i++) {
 			for (int j = 1; j <= mNy; j++) {
 				sqr_effrho[i][j] = rho[i][j] * h * h / (3.0 * delta_t * delta_t) - k * pressure[i][j];
@@ -386,7 +394,7 @@ namespace Engine {
 		sqr_effrho[0][mNy + 1] = effrho[0][mNy + 1] * effrho[0][mNy + 1];
 		sqr_effrho[mNx + 1][0] = effrho[mNx + 1][0] * effrho[mNx + 1][0];
 		sqr_effrho[mNx + 1][mNy + 1] = effrho[mNx + 1][mNy + 1] * effrho[mNx + 1][mNy + 1];
-
+#pragma omp parallel for
 		for (int i = 1; i <= mNx; i++)
 		{
 			for (int j = 1; j <= mNy; j++)
@@ -411,12 +419,14 @@ namespace Engine {
 				}
 			}
 		}
+#pragma omp parallel for
 		for (int i = 1; i <= mNx; i++) {
 			effrho[i][mNy + 1] = wettability1 * effrho[i][mNy];
 			effrho[i][0] = wettability1 * effrho[i][1];
 			sqr_effrho[i][mNy + 1] = effrho[i][mNy + 1] * effrho[i][mNy + 1];
 			sqr_effrho[i][0] = effrho[i][0] * effrho[i][0];
 		}
+#pragma omp parallel for
 		for (int i = 1; i <= mNy; i++) {
 			effrho[0][i] = effrho[1][i];
 			effrho[mNx + 1][i] = effrho[mNx][i];
@@ -428,6 +438,7 @@ namespace Engine {
 
 	void SolverPVTsimDynamic2D::calculate_force()
 	{
+#pragma omp parallel for
 		for (int i = 1; i <= mNx; i++) {
 			for (int j = 1; j <= mNy; j++) {
 				if (mask[i][j] == 0)
@@ -456,6 +467,7 @@ namespace Engine {
 
 	void SolverPVTsimDynamic2D::collision_step()
 	{
+#pragma omp parallel for
 		for (int numspec = 0; numspec < number_of_species; numspec++)
 		{
 			double f_eq_spec[9], f_eq_spec_n[9];

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "IniRead/ini.hpp"
+#include "omp.h"
 #include <cmath>
 
 namespace Engine {
