@@ -38,7 +38,7 @@ Engine::BasicSolver2D::BasicSolver2D(int Nx, int Ny, int numspec):
         (9, std::vector<std::vector<double>>(Nx + 2, std::vector<double>(Ny + 2))))
 {
     set_initial_conditions();
-    std::ifstream in("../../Masks/pore_kanal 600x100.txt"); // окрываем файл для чтения
+    std::ifstream in("../Masks/pore_kanal 600x100.txt"); // окрываем файл для чтения
     if (in.is_open())
     {
         for (int j = 0; j <= mNy + 1; ++j)
@@ -53,7 +53,7 @@ Engine::BasicSolver2D::BasicSolver2D(int Nx, int Ny, int numspec):
 void Engine::BasicSolver2D::SaveVTKFile(int tStep)
 {
     std::stringstream fname;
-    fname << "../../VTK/kappa = " << kappa << "/adv_";
+    fname << "../VTK/kappa=" << kappa << "/adv_";
     if (tStep < 10) fname << "0";
     if (tStep < 100) fname << "0";
     if (tStep < 1000) fname << "0";
@@ -139,7 +139,7 @@ void Engine::BasicSolver2D::LBM_Step()
 
 void Engine::BasicSolver2D::set_initial_conditions()
 {
-    const char* filenameini = "../../Init/ini.txt";
+    const char* filenameini = "../Init/ini.txt";
 
     h = ini_read<double>(filenameini, "h", 1.0e-6);
     delta_t = ini_read<double>(filenameini, "delta_t", 1.0e-9);

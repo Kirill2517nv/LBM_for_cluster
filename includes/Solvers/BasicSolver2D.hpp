@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "IniRead/ini.hpp"
+#include <cmath>
 
 namespace Engine {
 	class BasicSolver2D {

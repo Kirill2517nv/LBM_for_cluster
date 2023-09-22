@@ -39,6 +39,7 @@ target_include_directories(LBM_core PRIVATE src)
 target_compile_features(LBM_core PUBLIC cxx_std_17)
 
 set (CMAKE_CXX_STANDARD 17)
+ 
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES 
 	${ALL_SOURCES}
@@ -46,5 +47,5 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES
 
 add_executable(main ${SOURCE_EXE})
 target_link_libraries(main LBM_core)
-
+target_compile_features(main PUBLIC cxx_std_17)
 file(MAKE_DIRECTORY VTK)
