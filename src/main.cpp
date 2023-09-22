@@ -2,6 +2,7 @@
 //#include <filesystem>
 #include <sstream>
 #include <memory>
+#include <direct.h>
 #include "Solvers/BasicSolver2D.hpp"
 #include "Solvers/SolverMRTDimensional2D.hpp"
 #include "Solvers/Solver3Phases2D.hpp"
@@ -12,14 +13,19 @@ using namespace Engine;
 
 int main(int argc, char* argv[])
 {
-	const char* filenameini = "../Init/ini.txt";
+	const char* filenameini = "../../Init/ini.txt";
 	std::stringstream folder;
 	double kappa = ini_read<double>(filenameini, "kappa", 100);
-	folder << "mkdir ../VTK/kappa=" << kappa;
-	auto x = folder.str();
-	const char * cstr2 = x.c_str();
-	std::cout<< cstr2 << std::endl; 
-	std::system(cstr2);
+	std::cout << kappa << std::endl;
+	folder << "../../VTK/kappa=" << kappa;
+	if (_mkdir(folder.str().c_str()) == 0)
+	{
+		std::cout << "Directory " << folder.str().c_str() << "was successfully created\n";
+	}
+	else
+	{
+		std::cout << "Problem creating directory " << folder.str().c_str() << std::endl;
+	}
 	int Time = ini_read<int>(filenameini, "MAX_TIME", 1e7);
 	int Nx = ini_read<int>(filenameini, "Nx", 100);
 	int	Ny = ini_read<int>(filenameini, "Ny", 100);

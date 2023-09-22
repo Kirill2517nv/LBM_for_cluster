@@ -38,13 +38,17 @@ Engine::BasicSolver2D::BasicSolver2D(int Nx, int Ny, int numspec):
         (9, std::vector<std::vector<double>>(Nx + 2, std::vector<double>(Ny + 2))))
 {
     set_initial_conditions();
-    std::ifstream in("../Masks/pore_kanal 600x100.txt"); // окрываем файл для чтения
+    std::ifstream in("../../Masks/pore_kanal 600x100.txt"); // окрываем файл для чтения
     if (in.is_open())
     {
         for (int j = 0; j <= mNy + 1; ++j)
             for (int i = 0; i <= mNx + 1; ++i) {
                 in >> mask[i][j];
             }
+    }
+    else
+    {
+        std::cout << "Problem reading file with MASK!!!" << std::endl;
     }
     in.close();
 
@@ -53,7 +57,7 @@ Engine::BasicSolver2D::BasicSolver2D(int Nx, int Ny, int numspec):
 void Engine::BasicSolver2D::SaveVTKFile(int tStep)
 {
     std::stringstream fname;
-    fname << "../VTK/kappa=" << kappa << "/adv_";
+    fname << "../../VTK/kappa=" << kappa << "/adv_";
     if (tStep < 10) fname << "0";
     if (tStep < 100) fname << "0";
     if (tStep < 1000) fname << "0";
@@ -139,7 +143,7 @@ void Engine::BasicSolver2D::LBM_Step()
 
 void Engine::BasicSolver2D::set_initial_conditions()
 {
-    const char* filenameini = "../Init/ini.txt";
+    const char* filenameini = "../../Init/ini.txt";
 
     h = ini_read<double>(filenameini, "h", 1.0e-6);
     delta_t = ini_read<double>(filenameini, "delta_t", 1.0e-9);
@@ -158,7 +162,7 @@ void Engine::BasicSolver2D::set_initial_conditions()
     A2 = ini_read<double>(filenameini, "A2", -0.580); // -0.8080 -0.1381 Coefficient for calculating forces Peng-Robinson
     tau = ini_read<double>(filenameini, "tau", 1.); // relaxation time
     temperature = ini_read<double>(filenameini, "temperature", 350.); // Temperature of fluid [K]
-    kappa = ini_read<double>(filenameini, "kappa", 0.0);
+    kappa = ini_read<double>(filenameini, "kappa", 100.0);
     radius_of_droplet = ini_read<double>(filenameini, "radius_of_droplet", 10.);
     leak = ini_read<bool>(filenameini, "leak", 0);
     stream = ini_read<bool>(filenameini, "stream", 0);

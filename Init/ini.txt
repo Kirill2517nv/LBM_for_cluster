@@ -1,5 +1,5 @@
 MAX_TIME 10000000
-step_VTK 5000
+step_VTK 20
 start_pumping 10000
 Nx 600
 Ny 100
