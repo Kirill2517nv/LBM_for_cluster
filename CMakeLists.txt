@@ -12,10 +12,13 @@ set(INCLUDES
 	includes/Solvers/SolverPVTsim2D.hpp
 	includes/Solvers/SolverPVTsimDynamic2D.hpp
 )
-
-set(SOURCE_EXE
-	src/main.cpp
-)
+if (UNIX)
+	set(SOURCE_EXE
+	src/main_linux.cpp)
+else()
+	set(SOURCE_EXE
+	src/main.cpp)
+endif()
 
 set(SOURCES_SOLVERS
 	src/Solvers/BasicSolver2D.cpp
